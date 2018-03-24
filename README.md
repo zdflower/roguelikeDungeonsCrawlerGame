@@ -30,6 +30,7 @@ Para completar el nivel el jugador tiene que llegar a la salida (un recuadro ray
 
 Al completarse el objetivo o cuando el jugador se queda sin energa se muestra un mensaje de juego terminado.
 
+![Mapa](dungeons0-mapa.png)
 
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
