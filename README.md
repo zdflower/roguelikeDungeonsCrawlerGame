@@ -16,6 +16,9 @@
 - [x] The game should be challenging, but theoretically winnable.
 
 ## v. alfa 0.3
+
+![Mapa](dungeons0-mapa.png)
+
 Es una aproximación **muy preliminar** a la resolución del problema especificado, todavía pendiente.
 
 Cuando se carga la página se ve el nombre del juego, unas breves instrucciones, el marcador, el mapa y el jugador.
@@ -28,9 +31,7 @@ Cuando se encuentra con un monstruo se produce un combate.
 
 Para completar el nivel el jugador tiene que llegar a la salida (un recuadro rayado verde y negro).
 
-Al completarse el objetivo o cuando el jugador se queda sin energa se muestra un mensaje de juego terminado.
-
-![Mapa](dungeons0-mapa.png)
+Al completarse el objetivo o cuando el jugador se queda sin energía se muestra un mensaje de juego terminado.
 
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
