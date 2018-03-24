@@ -1,0 +1,51 @@
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .map {
+        margin: auto;
+        background-image: url(assets/tile.png);
+        position: relative;
+        top: 50px;
+        z-index: 0;
+      }
+      
+      img.player, img.weapon, img.comida, img.monster, img.salida, .wall {
+        display: inline;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        z-index: 1;
+      }
+
+      .wall {
+        background-image: url(assets/01bricks1.png);
+      }
+
+      .game_end {
+        background-color: purple;
+        color: lavender;
+        text-align: center;
+        padding-top: 20px;
+        margin: auto;
+        top: 50px;
+        width: 200px;
+        height: 100px;
+        position: relative;
+        z-index: 1; 
+      }
+
+      .instructions {
+        padding: 10px;
+        background-color: purple;
+        color: lavender;
+        display: inline;
+        position: absolute;
+      }
+
+      #score {
+        color: yellow;
+        background-color: mediumpurple;
+        text-align: center;
+      }
