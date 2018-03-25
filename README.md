@@ -9,7 +9,7 @@
 - [x] All the items and enemies on the map are arranged at random.
 - [x] I can move throughout a map, discovering items.
 - [x] I can move anywhere within the map's boundaries, but I can't move through an enemy until I've beaten it.
-- [ ] Much of the map is hidden. When I take a step, all spaces that are within a certain number of spaces from me are revealed.
+- [x] Much of the map is hidden. When I take a step, all spaces that are within a certain number of spaces from me are revealed.
 - [ ] When I beat an enemy, the enemy goes away and I get XP, which eventually increases my level.
 - [ ] When I fight an enemy, we take turns damaging each other until one of us loses. I do damage based off of my level and my weapon. The enemy does damage based off of its level. Damage is somewhat random within a range.
 - [ ] When I find and beat the boss, I win.
@@ -25,13 +25,35 @@ Cuando se carga la página se ve el nombre del juego, unas breves instrucciones,
 
 El jugador se mueve por el mapa recogiendo alimentos y recursos para luchar con los monstruos.
 
-Las teclas para mover al personaje son: 8 (arriba), 6 (derecha), 2 (abajo) y 4 (izquierda).
+Las teclas para mover al personaje son: k (arriba), l (derecha), j (abajo) y h (izquierda), como en el editor vim.
 
 Cuando se encuentra con un monstruo se produce un combate.
 
 Para completar el nivel el jugador tiene que llegar a la salida (un recuadro rayado verde y negro).
 
 Al completarse el objetivo o cuando el jugador se queda sin energía se muestra un mensaje de juego terminado.
+
+#### 2018-03-24
+
+Implementé la oscuridad más allá de unas celdas alrededor del jugador.
+
+Ubiqué un botón para activar/desactivar la oscuridad.
+
+Escribí un método toggleDarkOn() del juego, que es el que se va a llamar cuando se clickee el botón.
+
+Le agregué al estado del juego la propiedad darkOn, un boolean. El juego le pasa al mapa, vía props, el estado de darkOn.
+
+Voy a reescribir la renderización del mapa según se active o no la oscuridad.
+
+Voy a cambiar las teclas de movimiento a "j", "k", "h", "l", para abajo, arriba, izquierda, derecha, como en vim, en vez de 2, 8, 4 y 6.
+
+#### 2018-03-25
+
+Cambié las teclas de movimiento: j abajo, k arriba, h izquierda y l (ele) derecha.
+
+Ya funciona el botón para ver todo el mapa o sólo la parte alrededor del jugador.
+
+Tengo que mejorar el diseño de la página y otras partes como la mecánica del enfrentamiento y cómo ganar el juego, por ejemplo.
 
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 

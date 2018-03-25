@@ -5,6 +5,11 @@
         color: lavender;
       }
 
+      button.toggleDark {
+        position: relative;
+        margin: auto;
+      }
+
       .map {
         margin: auto;
         background-image: url(assets/tile.png);
@@ -13,7 +18,7 @@
         z-index: 0;
       }
       
-      img.player, img.weapon, img.comida, img.monster, img.salida, .wall {
+      img.player, img.weapon, img.comida, img.monster, img.salida, .wall, .dark {
         display: inline;
         width: 40px;
         height: 40px;
@@ -23,6 +28,10 @@
 
       .wall {
         background-image: url(assets/01bricks1.png);
+      }
+
+      .dark {
+        background-color: black;
       }
 
       .game_end {

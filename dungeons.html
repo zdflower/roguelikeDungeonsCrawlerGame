@@ -234,6 +234,62 @@
           )
       }
 
+
+function Darkness(props) {
+// Componente
+  const newPos = setPosStyle(props.darkPos)  
+  return <div style={newPos} className="dark"></div>
+}
+
+function esPosAlrededor(row, col, posJugador){
+  return (
+    esLaMisma(row, col, posJugador) 
+    || esLaDeAbajo(row, col, posJugador) 
+    || esLaDeArriba(row, col, posJugador) 
+    || esLaDeLaDer(row, col, posJugador)
+    || esLaDeLaIzq(row, col, posJugador) 
+    || esLaDeArribaIzq(row, col, posJugador) 
+    || esLaDeArribaDer(row, col, posJugador) 
+    || esLaDeAbajoIzq(row, col, posJugador) 
+    || esLaDeAbajoDer(row, col, posJugador)
+    );
+}
+
+  function esLaDeArribaIzq(row, col, pos){
+    return (row === pos.row -1 && col === pos.col - 1);
+  }
+  function esLaDeArriba(row, col, pos) {
+    return (row === pos.row -1 && col === pos.col);
+  }
+  
+  function esLaMisma(row, col, pos) {
+    return (row === pos.row && col === pos.col);
+  }
+
+  function esLaDeArribaDer(row, col, pos) {
+    return (row === pos.row - 1 && col === pos.col + 1);
+  }
+
+  function esLaDeLaDer(row, col, pos) {
+    return (row === pos.row && col === pos.col + 1);
+  }
+
+  function esLaDeAbajo(row, col, pos) {
+    return (row === pos.row + 1 && col === pos.col);
+  }
+  
+  function esLaDeAbajoIzq(row, col, pos) {
+    return (row === pos.row + 1 && col === pos.col - 1);
+  }
+
+  function esLaDeAbajoDer(row, col, pos) {
+    return (row === pos.row + 1 && col === pos.col + 1);
+  }
+  
+  function esLaDeLaIzq(row, col, pos){
+    return (row === pos.row && col === pos.col - 1);   
+  }  
+
       function Mapa(props) {
         const width = props.ancho + "px";
         const height = props.alto + "px";
@@ -241,33 +297,50 @@
         // ¿Conviene darles id a cada monstruo, cada comida, etc?
         return (
             <div className="map" style={style}>
-                  <Jugador jugadorPos={props.jugadorPos} />
-
-                  {props.mapa.map((fila, i) => {
-                    return ( fila.map((col, j) => {
-                                if ( col === "monster") {
-                                  return (<Monster image={IMAGES.monster} monsterPos={{row: i, col: j}} />)
-                                } else if ( col === "boss") {
-                                  return (<Monster image={IMAGES.boss} monsterPos={{row: i, col: j}} />)
-                                } else if ( col === "food") {
-                                  return (<Comida foodPos={{row: i, col: j}} />)
-                                }  else if ( col === "estrella") {
-                                  return (<Estrella weaponPos={{row: i, col: j}} />)
-                                } else if ( col === "libro") {
-                                  return (<Libro weaponPos={{row: i, col: j}} />)
-                                } else if ( col === "wall") {
-                                  return (<Pared wallPos={{row: i, col: j}} />)
-                                }   else if ( col === "salida") {
-                                  return (<Salida exitPos={{row: i, col: j}} />)
-                                }
-                              })
-                            )
-                    }) 
-                  }
+              <Jugador jugadorPos={props.jugadorPos} />
+              {props.mapa.map((fila, i) => 
+                {
+                  return ( fila.map( (col, j) => {
+                    const currentCellPos = {row: i, col: j}
+                    if (props.darkOn){
+                      if(esPosAlrededor(i,j, props.jugadorPos)){
+                        return iluminarCelda(col, currentCellPos);
+                      } else {
+                        return oscurecerCelda(currentCellPos);
+                      }
+                    } else {
+                      // Oscuridad desactivada
+                      return iluminarCelda(col, currentCellPos);
+                    }
+                  }))
+                }) 
+              }
             </div>
           )
       }
 
+function oscurecerCelda(cellPos){
+  return <Darkness darkPos={cellPos}/>
+}
+
+function iluminarCelda(col, cellPos) {
+  if ( col === "monster") {
+    return (<Monster image={IMAGES.monster} monsterPos={cellPos} />)
+  } else if ( col === "boss") {
+    return (<Monster image={IMAGES.boss} monsterPos={cellPos} />)
+  } else if ( col === "food") {
+    return (<Comida foodPos={cellPos} />)
+  } else if ( col === "estrella") {
+    return (<Estrella weaponPos={cellPos} />)
+  } else if ( col === "libro") {
+    return (<Libro weaponPos={cellPos} />)
+  } else if ( col === "wall") {
+    return (<Pared wallPos={cellPos} />)
+  } else if ( col === "salida") {
+    return (<Salida exitPos={cellPos} />)
+  }
+  return
+}
 
       function Jugador(props) {
         const newPos = setPosStyle(props.jugadorPos)
@@ -347,6 +420,7 @@
             mapa: MAPA,
             ancho: COLUMNAS * ANCHO_COL,
             alto: FILAS * ALTURA_FILA,
+            darkOn: true,
           }
         }
 
@@ -360,16 +434,16 @@
           let row = this.state.jugador.pos.row;
           let col = this.state.jugador.pos.col;
           
-          if (event.key === "2"){
+          if (event.key === "j"){
             // Mover hacia abajo.
             row++;
-          } else if (event.key === "6"){
+          } else if (event.key === "l"){
             // hacia derecha
             col++;
-          } else if (event.key === "8"){
+          } else if (event.key === "k"){
             // hacia arriba
             row--;
-          } else if (event.key === "4"){
+          } else if (event.key === "h"){
             // izquierda
             col--;
           }
@@ -493,15 +567,21 @@
           return this.state.mapa[row][col] === "salida";
         }
 
+        toggleDarkOn() {
+          console.log("Cambio darkOn.")
+          this.setState({darkOn: !this.state.darkOn});
+        }
+
         render() {
           // Si el nivel no está completado entonces se renderea el mapa, y si está completado se renderea un mensaje que indica que se terminó el juego.
-          let fin_o_mapa = <Mapa mapa={this.state.mapa} ancho={this.state.ancho} alto={this.state.alto} jugadorPos={this.state.jugador.pos} />;
+          let fin_o_mapa = <Mapa darkOn={this.state.darkOn} mapa={this.state.mapa} ancho={this.state.ancho} alto={this.state.alto} jugadorPos={this.state.jugador.pos} />;
           if (this.isLevelCompleted()) {
             fin_o_mapa = <GameEnd message="Game finished!" />;
           }
           return (
               <div id="juego">
                 <Instrucciones />
+                <button className="toggleDark" onClick={this.toggleDarkOn.bind(this)}>Toggle Darkness</button>
                 <TableroPuntaje 
                   puntos={this.state.puntos}
                   energia={this.state.energia}
