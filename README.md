@@ -33,6 +33,8 @@ Para completar el nivel el jugador tiene que llegar a la salida (un recuadro ray
 
 Al completarse el objetivo o cuando el jugador se queda sin energía se muestra un mensaje de juego terminado.
 
+*Importante*: a veces se genera un mapa en el que no se puede jugar porque o el jugador o la salida están rodeados de paredes. En la situación actual de desarrollo del juego para poder jugar se debe volver a cargar la página hasta obtener un mapa jugable.
+
 #### 2018-03-24
 
 Implementé la oscuridad más allá de unas celdas alrededor del jugador.

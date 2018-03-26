@@ -21,16 +21,16 @@
     <script type="text/babel">
       // Estas constantes y funciones después se podrían reunir en un objeto nivel.
 
+      const FILAS = 10;
+      const COLUMNAS = 15;
       const ALTURA_FILA = 40;
       const ANCHO_COL = 40;
-      const FILAS = 10;
-      const COLUMNAS = 10;
       const CANT_SALIDAS = 1;
       const CANT_BOSS = 1;
       const CANT_MONSTRUOS = 10;
       const CANT_COMIDA = 8;
       const CANT_ARMAS = 2; 
-      const CANT_PAREDES = 10;
+      const CANT_PAREDES = 15;
       const SIZE_WALL = 3; // cantidad máxima de celdas de una pared.
       const POS_INICIO_JUGADOR = { row: 0, col: 0};
       const FOOD_ENERGY = 10;
@@ -217,10 +217,10 @@
       function Instrucciones() {
         return (
         <div className="instructions">
-          <p> To move the character up, press 8.</p>
-          <p>To move the character down, press "2". </p>
-          <p>To move the character right, press "6".</p>
-          <p> To move the character left, press "4".</p>
+          <p> To move the character up, press k.</p>
+          <p>To move the character down, press j. </p>
+          <p>To move the character right, press l.</p>
+          <p> To move the character left, press h.</p>
           <p> The goal is "having fun". </p>
         </div>
         );
