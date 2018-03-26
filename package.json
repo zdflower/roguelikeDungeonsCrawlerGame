@@ -1,0 +1,21 @@
+{
+  "name": "RoguelikeDungeonsCrawlerGame",
+  "version": "0.0.4",
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.13"
+  },
+  "scripts": {
+    "start": "node ./node_modules/react-scripts/bin/react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "homepage": "https://zdflower.github.io/roguelikeDungeonsCrawlerGame",
+  "author": "ZDFlower",
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/zdflower/roguelikeDungeonsCrawlerGame"
+  }
+}

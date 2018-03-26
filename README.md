@@ -57,6 +57,8 @@ Ya funciona el botón para ver todo el mapa o sólo la parte alrededor del jugad
 
 Tengo que mejorar el diseño de la página y otras partes como la mecánica del enfrentamiento y cómo ganar el juego, por ejemplo.
 
+Comencé a separar el código en módulos y usar create-react-app. Necesitaba empezar a organizarlo porque se estaba haciendo muy largo. Me parece que no rompí nada en el proceso.
+
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
 Wikipedia entry on [Roguelike](https://en.wikipedia.org/w/index.php?title=Roguelike&oldid=823678549) games
@@ -75,4 +77,4 @@ Wikipedia entry on [Roguelike](https://en.wikipedia.org/w/index.php?title=Roguel
 - [Wind-mage, monsters, food and book images](https://openclipart.org/)
 - [Tiles and wall textures](http://download.tuxfamily.org/freegamearts/image/textures/trak2-textures.zip)
 - [Pure CSS Images](https://medium.com/coding-artist/a-beginners-guide-to-pure-css-images-ef9a5d069dd2)
-- [setInterval and setTimeout: timing events](https://www.youtube.com/watch?v=kOcFZV3c75I) - Beau teaches JavaScript
+- [setInterval and setTimeout: timing events](https://www.youtube.com/watch?v=kOcFZV3c75I) - Beau teaches JavaScript. Usé setInterval para una primera versión del juego que implementé sin React.

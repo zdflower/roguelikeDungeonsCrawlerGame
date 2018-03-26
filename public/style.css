@@ -60,4 +60,12 @@
         background-color: mediumpurple;
         text-align: center;
       }
+/*
+      #juego {
+        display: flex;
+      }
 
+      .map, .wall, #score, .instructions {
+        flex: 1;
+      }
+*/
