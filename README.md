@@ -59,6 +59,22 @@ Tengo que mejorar el diseño de la página y otras partes como la mecánica del 
 
 Comencé a separar el código en módulos y usar create-react-app. Necesitaba empezar a organizarlo porque se estaba haciendo muy largo. Me parece que no rompí nada en el proceso.
 
+#### 2018-03-27
+
+Ahora los elementos del mapa son objetos que por lo menos tienen la forma {type: String}, o null para los espacios vacíos.
+
+Los monstruos son objetos de la forma: {type: "monster" o "boss", energia: Number, arma: "aguja" o "monstruo"}.
+
+Incorporé una función para copiar el mapa, que ya había usado en el proyecto de Game of Life. Tuve que modificarlo para que copie los objetos que están en las celdas, en el otro proyecto sólo había booleanos.
+
+Cambié la forma de enfrentarse al monstruo. 
+
+Pero todavía falta que el jugador pueda acumular puntos XP para llegado a cierta cantidad suba sus puntos de nivel. También tengo que revisar cómo se definen los ataques. 
+
+Agregué al juego los atributos de estado de bossCaptured y nivelJugador.
+
+Faltaría mejorar la información que se muestra del juego en cada circunstancia. Por ejemplo durante un enfrentamiento, cuando se recoge un elemento, el tablero de puntajes, el final del juego, etc.
+
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
 Wikipedia entry on [Roguelike](https://en.wikipedia.org/w/index.php?title=Roguelike&oldid=823678549) games

@@ -111,21 +111,26 @@ function oscurecerCelda(cellPos){
   return <Darkness darkPos={cellPos}/>
 }
 
+// A partir de que cambié lo que guarda en mapa, en vez de cadenas son objetos de la forma {energia: Number, arma: String, type: String}
+
 function iluminarCelda(col, cellPos) {
-  if ( col === "monster") {
-    return (<Monster image={IMAGES.monster} monsterPos={cellPos} />)
-  } else if ( col === "boss") {
-    return (<Monster image={IMAGES.boss} monsterPos={cellPos} />)
-  } else if ( col === "food") {
-    return (<Comida foodPos={cellPos} />)
-  } else if ( col === "estrella") {
-    return (<Estrella weaponPos={cellPos} />)
-  } else if ( col === "libro") {
-    return (<Libro weaponPos={cellPos} />)
-  } else if ( col === "wall") {
-    return (<Pared wallPos={cellPos} />)
-  } else if ( col === "salida") {
-    return (<Salida exitPos={cellPos} />)
+  //HABRÍA QUE CHEQUEAR PRIMERO QUE COL NO SEA NULL PARA LUEGO VER .TYPE
+  if (col){
+    if ( col.type === "monster") {
+      return (<Monster image={IMAGES.monster} monsterPos={cellPos} />)
+    } else if ( col.type === "boss") {
+      return (<Monster image={IMAGES.boss} monsterPos={cellPos} />)
+    } else if ( col.type === "food") {
+      return (<Comida foodPos={cellPos} />)
+    } else if ( col.type === "estrella") {
+      return (<Estrella weaponPos={cellPos} />)
+    } else if ( col.type === "libro") {
+      return (<Libro weaponPos={cellPos} />)
+    } else if ( col.type === "wall") {
+      return (<Pared wallPos={cellPos} />)
+    } else if ( col.type === "salida") {
+      return (<Salida exitPos={cellPos} />)
+    }
   }
   return
 }

@@ -26,6 +26,10 @@
         z-index: 1;
       }
 
+      img.player {
+        z-index: 2;
+      }
+
       .wall {
         background-image: url(assets/01bricks1.png);
       }

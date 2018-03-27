@@ -14,15 +14,21 @@ const CANT_SALIDAS = 1;
 const CANT_BOSS = 1;
 const CANT_MONSTRUOS = 10;
 const CANT_COMIDA = 8;
-const CANT_ARMAS = 2; 
+const CANT_ARMAS = 4; // del jugador
 const CANT_PAREDES = 15;
 //const SIZE_WALL = 3; // cantidad máxima de celdas de una pared.
 const POS_INICIO_JUGADOR = { row: 0, col: 0};
 const FOOD_ENERGY = 10;
-const MONSTER_POWER = 10;
-const BOSS_POWER = 20;
-const ARMAS = {"estrella": 10, "libro": 20};
-
+// const MONSTER_POWER = 50;
+const MONSTER_ENERGY = 50;
+const MONSTER_LEVEL = 1;
+const BOSS_LEVEL = 5;
+const BOSS_ENERGY = 80;
+const ARMAS_JUGADOR = {"estrella": 10, "libro": 20};
+const ARMAS_MONSTRUOS = {"martillo": 5, "aguja": 1};
+// 
+// const MONSTRUO = {energia: MONSTER_POWER, arma: "martillo", nivel: 1}; // por ahora queda así.
+//
 let posiciones_disponibles = FILAS * COLUMNAS;
 
 const MAPA = createMapa(FILAS, COLUMNAS);
@@ -118,18 +124,6 @@ function agregarParedAlMapa(mapa, filas, columnas) {
   }
 }
 
-// SERÍA MEJOR tener siempre a mano una función genérica que devuelva enteros positivos al azar entre dos límites.
-
-function lanzarMoneda() {
-  // Devuelve 0 o 1, al azar.
-  return Math.floor(Math.random() * 2); 
-}
-
-function addWeaponToMap(mapa, pos){
-  const armas = Object.keys(ARMAS); // array de keys de ARMAS
-  const typeOfWeapon = armas[lanzarMoneda()]; // SUPONIENDO que SIEMPRE van a haber DOS tipos de arma.
-  addItemToMap(mapa, typeOfWeapon, pos);
-}
 
 function ocupada(mapa, pos) {
   // Se va a considerar desocupada si en mapa[pos.row][pos.col] hay null
@@ -165,29 +159,53 @@ function choosePos(max_rows, max_cols){
 }
 
 function addExitToMap(mapa, pos) {
-  addItemToMap(mapa, "salida", pos);
+  addItemToMap(mapa, {type:"salida"}, pos);
 }
 
 function addMonsterToMap(mapa, pos) {
-  addItemToMap(mapa, "monster", pos);
+  // Elegir un número al azar entre 1 y 4 para definir el nivel de los monstruos
+  // Por ahora, van a tener todos nivel 1.
+  addItemToMap(mapa, {type: "monster", energia: MONSTER_ENERGY, arma: "aguja", nivel: MONSTER_LEVEL}, pos);
 }
 
 function addMonsterBossToMap(mapa, pos) {
-  addItemToMap(mapa, "boss", pos);
-}
-
-function addFoodToMap(mapa, pos){
-  addItemToMap(mapa, "food", pos);
+  addItemToMap(mapa, {type: "boss", energia: BOSS_ENERGY, arma: "martillo", nivel: BOSS_LEVEL}, pos);
 }
 
 function addWallToMap(mapa, pos){
- addItemToMap(mapa, "wall", pos);
+ addItemToMap(mapa, {type:"wall"}, pos);
+}
+
+// Pensar cómo reescribir addWeaponToMap y addFoodToMap porque son muy similares, se podría usar una genérica con ciertos parámetros.
+function addWeaponToMap(mapa, pos){
+  const armas = Object.keys(ARMAS_JUGADOR); // array de keys de ARMAS
+  const typeOfWeapon = armas[randomPositiveIntegerFromMinToMax(0, armas.length)];
+  addItemToMap(mapa, {"type": typeOfWeapon}, pos); // por ahí acá hay un bug. ver qué es typeOfWeapon
+}
+
+function addFoodToMap(mapa, pos){
+  // Para ofrecer varios tipos de comida:
+  // const comida = Object.keys(FOOD);
+  // const typeOfFood = comida[randomPositiveIntegerFromMinToMax(0, comida.length)];
+  // addItemToMap(mapa, {"type": typeOfFood}, pos);
+  addItemToMap(mapa, {"type": "food"}, pos);
 }
 
 function addItemToMap(mapa, item, pos) {
   mapa[pos.row][pos.col] = item;
 }
 
+function randomPositiveIntegerFromMinToMax(min, max) {
+  // https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Math/random
+  return Math.floor(Math.random() * (max - min) + min); 
+}
+
+/*
+function lanzarMoneda() {
+  // Devuelve 0 o 1, al azar.
+  return randomPositiveIntegerFromMinToMax(0, 2); // usar la general y pasarle 0 y 2 como argumentos
+}
+*/
 
 
 class Juego extends React.Component {
@@ -198,10 +216,12 @@ class Juego extends React.Component {
       puntos: 0,
       energia: 50,
       arma: "estrella",
+      nivelJugador: 1,
       mapa: MAPA,
       ancho: COLUMNAS * ANCHO_COL,
       alto: FILAS * ALTURA_FILA,
       darkOn: true,
+      bossCaptured: false,
     }
   }
 
@@ -239,15 +259,23 @@ class Juego extends React.Component {
   }
 
   updateState(pos) {
+    // Antes de querer acceder a type en cada una de estas funciones, veo si pos es null
+    const celda = this.getCellObj(pos);
+    // console.log(celda);
+    if(celda){
       if (this.isFood(pos)){
         this.eatFood(pos);
       } else if (this.isMonster(pos) || this.isTheBoss(pos)) {
         this.fightMonster(pos);
       } else if (this.isWeapon(pos)) {
         this.takeWeapon(pos);
-      } else if (this.isEmptySpace(pos) || this.isTheExit(pos)){
+      } else if (this.isTheExit(pos)){
         this.moveTo(pos);
-      }
+      }      
+    } else {
+      // la celda contiene null, está vacía, se puede ocupar
+      this.moveTo(pos);
+    }
   }
 
   eatFood(pos) {
@@ -276,34 +304,84 @@ class Juego extends React.Component {
     })
   }
 
+  attack(player, monster){
+    // player y monster son de la forma: {energia: Number, arma: String, nivel: Number}
+    // Devuelve un "player" o "monster" según quién haya ganado el ataque.
+    
+    // usar random y algo más para que las probabilidades se ajusten al power de cada uno. 
+    // Provisoriamente:
+    const playerPower = (player.energia + ARMAS_JUGADOR[player.arma] + player.nivel) * Math.random();
+    const monsterPower = (monster.energia + ARMAS_MONSTRUOS[monster.arma] + monster.nivel) * Math.random();
+    console.log("Player power: " + playerPower);
+    console.log("Monster power: " + monsterPower);
+    console.log("Monster energy: " + monster.energia);
+    // acá veo cuál gana.
+
+    // por ahora, y va a cambiar porque no tiene que ser así:
+    return (playerPower > monsterPower)? "player" : "monster";
+  }
+
   // Más adelante adecuar el enfrentamiento a las especificaciones. Ver user stories.
 
   fightMonster(pos){
     // TO DO
+    // provisorio.
+    // falta implementar que el jugador gane puntos de experiencia y con eso pueda ir subiendo su nivel.
 
-    const enemyPower = (this.isTheBoss(pos))? BOSS_POWER : MONSTER_POWER;
+    const playerState = {energia: this.state.energia, arma: this.state.arma, nivel: this.state.nivelJugador};
+    const monsterState = this.getCellObj(pos); // el monstruo de la posición actual pos
+    console.error("Energía del monstruo: " + monsterState.energia);
+    // acá se va a calcular quién recibe el daño.
+    // al que le toca perder se le reduce su energía.
+    // si el monstruo se queda sin energía, desaparece del mapa, y el jugador gana experiencia
+    // si acumula cierta cantidad de puntos de experiencia suma uno a su nivel, y el conteo de experiencia para llegar al próximo nivel puede ponerse a 0 o seguir acumulándose.
 
-    const playerAttack = Math.random();
-    const monsterAttack = Math.random();
-    if (playerAttack >= monsterAttack) {
-      this.removeFromMap(pos);
-      this.addPoints(enemyPower);
-      this.moveTo(pos);
+    // La función podría devolver "monster" o "player", según quién ganó el ataque.
+    // entonces si ganó player, tal cosa, else, tal otra.
+
+    const winner = this.attack(playerState, monsterState);
+
+    if (winner === "player"){
+      this.reduceMonsterEnergy(pos, 5); // por ahora queda así
     } else {
-      this.reduceEnergy(enemyPower);
+      // restar puntos al jugador
+      this.reduceEnergy(5); // por ahora queda así
     }
+
+    if (monsterState.energia <= 0) {  
+      if(this.isTheBoss(pos)){
+        // esto primero porque si no, no detecta nunca que es el boss porque parece que lo saca del mapa y mueve al jugador entonces la posición es otra...
+        this.setState({bossCaptured: true});
+      }
+
+      // Esto debería suceder si el monstruo perdió toda su energía. Es decir si el jugador venció al monstruo.
+      this.removeFromMap(pos);
+      // this.addPoints(enemyPower); // acá debería indicarse agregar puntos de experiencia al jugador
+      this.moveTo(pos);
+      // ¿Cómo lo puedo escribir mejor?
+    }
+
+    // ¿acá tengo que chequear si es el monster boss y actualizar el estado de bossCaptured?
+
   }
 
   reduceEnergy(amount) {
     this.addEnergy((-amount));
   }
 
+  reduceMonsterEnergy(pos, amount) {
+    const mapa = copyBoard(this.state.mapa);
+    mapa[pos.row][pos.col].energia -= amount;
+    this.setState({mapa: mapa});
+    return
+  }
+
   takeWeapon(pos) {
-    // TO DO
-    const arma = this.state.mapa[pos.row][pos.col];
+    const arma = this.getCellObjType(pos);
+    console.error("Tipo de arma: " + arma);
     this.setState({arma: arma});
     this.removeFromMap(pos);
-    this.addPoints(ARMAS[arma]);
+    this.addPoints(ARMAS_JUGADOR[arma]);
     this.moveTo(pos);
   }
 
@@ -314,38 +392,49 @@ class Juego extends React.Component {
     return false;
   }
 
-  // ¿Es necesaria isEmptySpace()?
-  isEmptySpace(pos) {
+  // ¿Es necesaria isEmptySpace()? Me parece que no
+  /* isEmptySpace(pos) {
     return !ocupada(this.state.mapa, pos); // función fuera de la clase.
   }
+  */
 
   isFood(pos) {
-    return this.state.mapa[pos.row][pos.col] === "food";
+    return this.getCellObjType(pos) === "food";
   }
 
   isWeapon(pos) {
-    return ( this.state.mapa[pos.row][pos.col] === "estrella" 
-      || this.state.mapa[pos.row][pos.col] === "libro");
+    return ( this.getCellObjType(pos) === "estrella" 
+      || this.getCellObjType(pos) === "libro");
   }
 
   isTheBoss(pos) {
-    return this.state.mapa[pos.row][pos.col] === "boss";         
+    return this.getCellObjType(pos) === "boss";         
   }
 
   isMonster(pos) {
-    return this.state.mapa[pos.row][pos.col] === "monster";
+    return this.getCellObjType(pos) === "monster";
   }
 
   isLevelCompleted(){
     // Criterio actual, provisorio: se termina el nivel si el jugador no tiene más energía o si llegó a la celda marcada como salida. ¿Qué pasa si no puede porque está encerrada por paredes o el mismo jugador está encerrado? Por ahora, volver a cargar la página para generar otro mapa.
-    let res = this.isTheExit(this.state.jugador.pos) || this.state.energia <= 0;
+    // Agregar el criterio de que tiene que haber vencido al monstruo jefe.
+    let res = (this.isTheExit(this.state.jugador.pos) && this.state.bossCaptured) || this.state.energia <= 0;
     return res;
   }
 
-  isTheExit(pos) {
+  getCellObj(pos) {
     const row = pos.row;
     const col = pos.col;
-    return this.state.mapa[row][col] === "salida";
+    return this.state.mapa[row][col];
+  }
+
+  getCellObjType(pos){
+    const obj = this.getCellObj(pos);
+    return (obj)? obj.type : null;
+  }
+
+  isTheExit(pos) {
+    return this.getCellObjType(pos) === "salida";
   }
 
   toggleDarkOn() {
@@ -375,3 +464,38 @@ class Juego extends React.Component {
 }
 
 export default Juego;
+
+/* Copia profunda de un array de arrays de objetos */
+// Hacer que se copien profundamente los objetos también
+/* 
+Ojo con Object.assign() porque
+
+``For deep cloning, we need to use other alternatives because Object.assign()
+copies property values. If the source value is a reference to an object,
+it only copies that reference value.´´(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+
+Igual, en este caso los valores de las propiedades son números o cadenas, que se pasan por copia y no por referencia.
+*/
+
+function copyBoard(board){
+  let copy = [];
+  for (let r = 0; r < board.length; r++){
+     copy.push(copyRow(board,r,board[0].length));
+  }
+  return copy;
+}
+
+function copyRow(board, r, cols) {
+  let row = [];
+    for (let c = 0; c < cols; c++) {
+      const contenido = board[r][c];
+      const obj = (contenido) ? Object.assign({}, contenido) : null; // acá el problema se da cuando quiere copiar una cadena
+      // Hay un problema cuando board[r][c] es null, en ese caso obj va a ser {} y no null, y entonces los métodos y funciones que cuentan con que haya null o un objeto no vacío fallan
+      // porque Boolean(null) es false pero ¡Boolean({}) es true!.
+      // se me ocurre que podría chequear acá si obj es {} y en ese caso devolver null o cambiar en otro lado, pero si cambio acá me parece más sencillo y mantiene la interfaz de devolver null cuando había null
+      /* O chequeo antes la celda es de tipo objeto o hago que todo lo que va en el mapa sea por lo menos de tipo {type: algúnValor} */
+      
+      row.push(obj);
+    }  
+  return row;
+}
