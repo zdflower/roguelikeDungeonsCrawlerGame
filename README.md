@@ -10,9 +10,9 @@
 - [x] I can move throughout a map, discovering items.
 - [x] I can move anywhere within the map's boundaries, but I can't move through an enemy until I've beaten it.
 - [x] Much of the map is hidden. When I take a step, all spaces that are within a certain number of spaces from me are revealed.
-- [ ] When I beat an enemy, the enemy goes away and I get XP, which eventually increases my level.
-- [ ] When I fight an enemy, we take turns damaging each other until one of us loses. I do damage based off of my level and my weapon. The enemy does damage based off of its level. Damage is somewhat random within a range.
-- [ ] When I find and beat the boss, I win.
+- [x] When I beat an enemy, the enemy goes away and I get XP, which eventually increases my level.
+- [x] When I fight an enemy, we take turns damaging each other until one of us loses. I do damage based off of my level and my weapon. The enemy does damage based off of its level. Damage is somewhat random within a range.
+- [x] When I find and beat the boss, I win.
 - [x] The game should be challenging, but theoretically winnable.
 
 ## v. alfa 0.3
@@ -75,6 +75,11 @@ Agregué al juego los atributos de estado de bossCaptured y nivelJugador.
 
 Faltaría mejorar la información que se muestra del juego en cada circunstancia. Por ejemplo durante un enfrentamiento, cuando se recoge un elemento, el tablero de puntajes, el final del juego, etc.
 
+####2018-03-27 - 2da parte
+
+El jugador suma puntos de experiencia al vencer a un monstruo y cuando llegan a 25 suma 1 punto a su nivel, y los puntos de experiencia vuelven a 0.
+
+Se muestra el nivel del jugador y los puntos acumulados desde que empezó el nivel en el tablero de puntaje.
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
 Wikipedia entry on [Roguelike](https://en.wikipedia.org/w/index.php?title=Roguelike&oldid=823678549) games
