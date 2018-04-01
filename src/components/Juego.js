@@ -178,9 +178,9 @@ function addWallToMap(mapa, pos){
 
 // Pensar cómo reescribir addWeaponToMap y addFoodToMap porque son muy similares, se podría usar una genérica con ciertos parámetros.
 function addWeaponToMap(mapa, pos){
-  const armas = Object.keys(ARMAS_JUGADOR); // array de keys de ARMAS
+  const armas = Object.keys(ARMAS_JUGADOR);
   const typeOfWeapon = armas[randomPositiveIntegerFromMinToMax(0, armas.length)];
-  addItemToMap(mapa, {"type": typeOfWeapon}, pos); // por ahí acá hay un bug. ver qué es typeOfWeapon
+  addItemToMap(mapa, {"type": typeOfWeapon}, pos); 
 }
 
 function addFoodToMap(mapa, pos){
@@ -242,7 +242,10 @@ class Juego extends React.Component {
       col--;
     }
 
-    this.tryToChangePos({row: row, col: col});
+    // Se va a intentar mover sólo si el juego no está terminado
+    if (!this.isLevelCompleted()){
+      this.tryToChangePos({row: row, col: col});
+    }
   }
 
   tryToChangePos(pos) {
@@ -311,17 +314,13 @@ class Juego extends React.Component {
     })
   }
 
-  // Más adelante adecuar el enfrentamiento a las especificaciones. Ver user stories.
   fightMonster(pos){
-    // TO DO
+    // TO DO: Mejorar esta función.
     const xp = (this.isTheBoss(pos))? 20 : 5;
 
     const playerState = {energia: this.state.energia, arma: this.state.arma, nivel: this.state.nivelJugador};
     const monsterState = this.getCellObj(pos); // el monstruo de la posición actual
-    console.error("Energía del monstruo: " + monsterState.energia);
-
     // ¿Está bien acá actualizar el estado de cuál es el monstruo actual para que su información se muestre en la pantalla?
-    // Me parecería que no, pero voy a probar. Podría haber problemas con cuándo se actualiza, con la mutabilidad de los objetos...
     this.setState({currentMonster: monsterState})
     
     const damageByMonster = ARMAS_MONSTRUOS[monsterState.arma] + monsterState.nivel;
@@ -339,7 +338,7 @@ class Juego extends React.Component {
       this.reduceMonsterEnergy(pos, damageByPlayer);
     } else {
       // restar puntos al jugador
-      this.reduceEnergy(damageByMonster);
+      this.reducePlayerEnergy(damageByMonster);
     }
 
     if (monsterState.energia <= 0) {  
@@ -348,7 +347,7 @@ class Juego extends React.Component {
         this.setState({bossCaptured: true});
       }
       this.removeMonsterFromMap(pos);
-      this.addXP(xp); //puntos de experiencia que se suma al jugador
+      this.addXP(xp); //puntos de experiencia que se suman al jugador
       this.moveTo(pos);
     }
   }
@@ -357,25 +356,23 @@ class Juego extends React.Component {
     // player y monster son de la forma: {energia: Number, arma: String, nivel: Number}
     // Devuelve "player" o "monster" según quién haya ganado el ataque.
     
-    // Provisoriamente:
-    // Me parece que hay algo que no está bien del todo o que no lo estoy entendiendo. Las chances del jugador ¿no deberían ser más o menos el doble de las del monstruo, ya que 96 es algo menos que el doble de 55?, en un ejemplo en el que el player power es 96 y el del monster es 55.
     const playerPower = (player.energia + ARMAS_JUGADOR[player.arma] + player.nivel) 
     const monsterPower = (monster.energia + ARMAS_MONSTRUOS[monster.arma] + monster.nivel)
-    console.log("Player power: " + playerPower);
-    console.log("Monster power: " + monsterPower);
-    console.log("Monster energy: " + monster.energia);
+    // console.log("Player power: " + playerPower);
+    // console.log("Monster power: " + monsterPower);
+    // console.log("Monster energy: " + monster.energia);
     const totalPlayerMonster = playerPower + monsterPower;
-    console.log("total player monster power: " + totalPlayerMonster);
+    // console.log("total player monster power: " + totalPlayerMonster);
     const porcentajePlayer = playerPower * 100 / totalPlayerMonster;
-    console.log("Porcentaje player: " + porcentajePlayer);
+    // console.log("Porcentaje player: " + porcentajePlayer);
     const hastaDondePlayer = 10 * porcentajePlayer / 100; 
-    console.log("hasta donde player: " + hastaDondePlayer);
+    // console.log("hasta donde player: " + hastaDondePlayer);
     const tiro = randomPositiveIntegerFromMinToMax(0, 10);
-    console.log("tiro: " + tiro);
+    // console.log("tiro: " + tiro);
     return (tiro > hastaDondePlayer)? "monster" : "player";
   }
 
-  reduceEnergy(amount) {
+  reducePlayerEnergy(amount) {
     //Para el jugador
     this.addEnergy((-amount));
   }
