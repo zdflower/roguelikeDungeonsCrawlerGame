@@ -81,6 +81,31 @@ El jugador suma puntos de experiencia al vencer a un monstruo y cuando llegan a 
 
 Se muestra el nivel del jugador y los puntos acumulados desde que empezó el nivel en el tablero de puntaje.
 
+#### 2018-03-28 
+
+*To do*:
+- [ ] Ajustar cómo se define el combate con los monstruos.
+- [x] Mostrar una imagen del jugador y del monstruo correspondiente en el tablero de puntaje.
+- [x] Mejorar el aspecto de la página en general.
+- [ ] Hacer que se muestren mensajes según sean las circunstancias del juego, por ejemplo: "Ataque recibido", "Ataque realizado", "Monstruo vencido", etc.
+- [x] Revisar cómo se actualiza el estado y la renderización del tablero con los datos del monstruo.
+
+#### 2018-03-31
+Hice varios cambios y todavía no hice commit. 
+
+Modifiqué estilos para reubicar los elementos en la página.
+
+Donde se muestra el puntaje del jugador, también se muestra la imagen del jugador, y debajo la imagen y las características del monstruo con el que se está enfrentando en cierto momento.
+
+Pasé la constante IMAGES a un archivo aparte y lo importo donde hace falta.
+
+Creé una función removeMonsterFromMap que usa removeFromMap y además setea el estado del juego para currentMonster en null.
+
+Al componente TableroPuntaje le paso el currentMonster, y la imagen del jugador.
+
+Modifiqué el texto de las instrucciones.
+
+- [ ] Para hacer: reescribir la manera en que se gana o pierde en un ataque.
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
 Wikipedia entry on [Roguelike](https://en.wikipedia.org/w/index.php?title=Roguelike&oldid=823678549) games
