@@ -3,8 +3,9 @@ import React from 'react';
 function Instrucciones() {
   return (
   <div className="instructions">
-    <span> Up: k </span><span> Down: j. </span><span> Right: l.</span><span> Left: h.</span>
-    <p> The goal is "having fun". </p>
+    <img src="assets/keys.png" alt="Movement keys" />
+    <p>Left: H, Down: J, Up: K , Right: L</p>
+    <p>The goal is "having fun".</p>
   </div>
   );
 }
