@@ -358,13 +358,16 @@ class Juego extends React.Component {
     // Devuelve "player" o "monster" según quién haya ganado el ataque.
     
     // Provisoriamente:
-    const playerPower = (player.energia + ARMAS_JUGADOR[player.arma] + player.nivel) * Math.random();
-    const monsterPower = (monster.energia + ARMAS_MONSTRUOS[monster.arma] + monster.nivel) * Math.random();
+    const playerPower = (player.energia + ARMAS_JUGADOR[player.arma] + player.nivel) 
+    const monsterPower = (monster.energia + ARMAS_MONSTRUOS[monster.arma] + monster.nivel)
     console.log("Player power: " + playerPower);
     console.log("Monster power: " + monsterPower);
     console.log("Monster energy: " + monster.energia);
-    // Por ahora gana el que sacó mayor puntaje.
-    return (playerPower > monsterPower)? "player" : "monster";
+    const totalPlayerMonster = playerPower + monsterPower;
+    const porcentajePlayer = playerPower * 100 / totalPlayerMonster;
+    const hastaDondePlayer = 10 * porcentajePlayer / 100; 
+    const tiro = randomPositiveIntegerFromMinToMax(0, 10);
+    return (tiro > hastaDondePlayer)? "monster" : "player";
   }
 
   reduceEnergy(amount) {
