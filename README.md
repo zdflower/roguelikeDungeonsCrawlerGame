@@ -84,7 +84,7 @@ Se muestra el nivel del jugador y los puntos acumulados desde que empezó el niv
 #### 2018-03-28 
 
 *To do*:
-- [ ] Ajustar cómo se define el combate con los monstruos.
+- [x] Ajustar cómo se define el combate con los monstruos.
 - [x] Mostrar una imagen del jugador y del monstruo correspondiente en el tablero de puntaje.
 - [x] Mejorar el aspecto de la página en general.
 - [ ] Hacer que se muestren mensajes según sean las circunstancias del juego, por ejemplo: "Ataque recibido", "Ataque realizado", "Monstruo vencido", etc.
@@ -105,7 +105,15 @@ Al componente TableroPuntaje le paso el currentMonster, y la imagen del jugador.
 
 Modifiqué el texto de las instrucciones.
 
-- [ ] Para hacer: reescribir la manera en que se gana o pierde en un ataque.
+- [x] Para hacer: reescribir la manera en que se gana o pierde en un ataque.
+
+#### 2018-04-01
+Cambié cómo se desarrolla un ataque.
+
+Descubrí un bug: después de llegar a la salida, si el usuario sigue tocando las teclas de movimiento, el personaje puede entrar y salir y se muestra game over o el mapa. No debería ser así.
+
+- [x] Corregir bug.
+
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
 Wikipedia entry on [Roguelike](https://en.wikipedia.org/w/index.php?title=Roguelike&oldid=823678549) games
