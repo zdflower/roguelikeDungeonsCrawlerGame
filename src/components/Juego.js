@@ -4,6 +4,7 @@ import Instrucciones from './Instrucciones.js';
 import Mapa from './Mapa';
 import GameEnd from './GameEnd';
 import TableroPuntaje from './TableroPuntaje';
+import IMAGES from './images.js';
 
 // Generador de Nivel de Juego:
 const FILAS = 10;
@@ -213,6 +214,7 @@ class Juego extends React.Component {
       alto: FILAS * ALTURA_FILA,
       darkOn: true,
       bossCaptured: false,
+      currentMonster: {}
     }
   }
 
@@ -296,6 +298,11 @@ class Juego extends React.Component {
     }
   }        
 
+  removeMonsterFromMap(pos){
+    this.setState({currentMonster: null});
+    this.removeFromMap(pos);
+  }
+
   removeFromMap(pos) {
     const mapa = [...this.state.mapa];
     mapa[pos.row][pos.col] = null;
@@ -312,10 +319,13 @@ class Juego extends React.Component {
     const playerState = {energia: this.state.energia, arma: this.state.arma, nivel: this.state.nivelJugador};
     const monsterState = this.getCellObj(pos); // el monstruo de la posición actual
     console.error("Energía del monstruo: " + monsterState.energia);
+
+    // ¿Está bien acá actualizar el estado de cuál es el monstruo actual para que su información se muestre en la pantalla?
+    // Me parecería que no, pero voy a probar. Podría haber problemas con cuándo se actualiza, con la mutabilidad de los objetos...
+    this.setState({currentMonster: monsterState})
     
     const damageByMonster = ARMAS_MONSTRUOS[monsterState.arma] + monsterState.nivel;
     const damageByPlayer = ARMAS_JUGADOR[playerState.arma] + playerState.nivel;
-
 
     // Acá se va a calcular quién recibe el daño.
     // Al que le toca perder se le reduce su energía.
@@ -337,7 +347,7 @@ class Juego extends React.Component {
         // Esto primero porque si no, no detecta nunca que es el boss porque parece que lo saca del mapa y mueve al jugador entonces la posición es otra...
         this.setState({bossCaptured: true});
       }
-      this.removeFromMap(pos);
+      this.removeMonsterFromMap(pos);
       this.addXP(xp); //puntos de experiencia que se suma al jugador
       this.moveTo(pos);
     }
@@ -432,6 +442,7 @@ class Juego extends React.Component {
     if (this.isLevelCompleted()) {
       fin_o_mapa = <GameEnd message="Game finished!" />;
     }
+    // console.error(this.state.currentMonster.type); esto se indefine si currentMonster es null
     return (
         <div id="juego">
           <Instrucciones />
@@ -441,6 +452,8 @@ class Juego extends React.Component {
             energia={this.state.energia}
             arma={this.state.arma}
             nivelJugador={this.state.nivelJugador}
+            playerImg={IMAGES.player}
+            monster={this.state.currentMonster}
           />
           {fin_o_mapa}
         </div>
