@@ -110,8 +110,7 @@ function isOnTheMap(mapa, pos) {
   }
 
 function agregarParedAlMapa(mapa, filas, columnas) {
-  // TO DO: Revisar.
-  // Por ahora está fijo que por cada pared se van a elegir 3 posiciones.
+  // Por cada pared se van a elegir 3 posiciones.
 
   for (let i = 0; i < CANT_PAREDES; i++) {
     const pos_1 = choosePos(filas, columnas); // elegir la del medio
@@ -165,7 +164,8 @@ function addMonsterToMap(mapa, pos) {
   // TO DO
   // Elegir un número al azar entre 1 y 4 para definir el nivel de los monstruos
   // Por ahora, van a tener todos nivel 1.
-  addItemToMap(mapa, {type: "monster", energia: MONSTER_ENERGY, arma: "aguja", nivel: MONSTER_LEVEL}, pos);
+  const nivel = randomPositiveIntegerFromMinToMax(1,4);
+  addItemToMap(mapa, {type: "monster", energia: MONSTER_ENERGY, arma: "aguja", nivel: nivel}, pos);
 }
 
 function addMonsterBossToMap(mapa, pos) {
