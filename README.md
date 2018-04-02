@@ -14,8 +14,7 @@
 - [x] When I fight an enemy, we take turns damaging each other until one of us loses. I do damage based off of my level and my weapon. The enemy does damage based off of its level. Damage is somewhat random within a range.
 - [x] When I find and beat the boss, I win.
 - [x] The game should be challenging, but theoretically winnable.
-
-## v. alfa 0.3
+## The game
 
 ![Mapa](dungeons0-mapa.png)
 
@@ -37,6 +36,7 @@ Al completarse el objetivo o cuando el jugador se queda sin energía se muestra 
 
 #### 2018-03-24
 
+##### v. alfa 0.3
 Implementé la oscuridad más allá de unas celdas alrededor del jugador.
 
 Ubiqué un botón para activar/desactivar la oscuridad.
@@ -113,6 +113,10 @@ Cambié cómo se desarrolla un ataque.
 Descubrí un bug: después de llegar a la salida, si el usuario sigue tocando las teclas de movimiento, el personaje puede entrar y salir y se muestra game over o el mapa. No debería ser así.
 
 - [x] Corregir bug.
+
+#### 2018-04-02
+Para hacer:
+- [ ] Poner el juego online.
 
 ## ¿Qué es un *Roguelike dungeons crawler game*? / What is a RDCG?
 
