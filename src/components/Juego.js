@@ -21,7 +21,6 @@ const POS_INICIO_JUGADOR = { row: 0, col: 0};
 
 const FOOD_ENERGY = 10;
 const MONSTER_ENERGY = 50;
-const MONSTER_LEVEL = 1;
 const BOSS_LEVEL = 5;
 const BOSS_ENERGY = 80;
 const ARMAS_JUGADOR = {"estrella": 5, "libro": 10};
@@ -356,8 +355,8 @@ class Juego extends React.Component {
     // player y monster son de la forma: {energia: Number, arma: String, nivel: Number}
     // Devuelve "player" o "monster" según quién haya ganado el ataque.
     
-    const playerPower = (player.energia + ARMAS_JUGADOR[player.arma] + player.nivel) 
-    const monsterPower = (monster.energia + ARMAS_MONSTRUOS[monster.arma] + monster.nivel)
+    const playerPower = (ARMAS_JUGADOR[player.arma] + player.nivel) 
+    const monsterPower = (ARMAS_MONSTRUOS[monster.arma] + monster.nivel)
     // console.log("Player power: " + playerPower);
     // console.log("Monster power: " + monsterPower);
     // console.log("Monster energy: " + monster.energia);

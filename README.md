@@ -115,6 +115,10 @@ Descubrí un bug: después de llegar a la salida, si el usuario sigue tocando la
 - [x] Corregir bug.
 
 #### 2018-04-02
+Volví a cambiar cómo se define un ataque. Ahora no se tiene en cuenta la energía para decidir a quién corresponde el ataque, y entonces pesan más el nivel y el arma.
+
+También hay monstruos comunes con niveles que van de 1 a 3.
+
 Para hacer:
 - [ ] Poner el juego online.
 
