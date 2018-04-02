@@ -1,17 +1,26 @@
       body {
         margin: 0;
         padding: 0;
+        background-color: black;
+        color: lavender;
+      }
+
+      button.toggleDark {
+        position: relative;
+        margin: auto;
+        z-index: 2;
       }
 
       .map {
         margin: auto;
         background-image: url(assets/tile.png);
-        position: relative;
-        top: 50px;
+        position: absolute;
+        left: 500px;
+        top: 150px;
         z-index: 0;
       }
       
-      img.player, img.weapon, img.comida, img.monster, img.salida, .wall {
+      img.player, img.weapon, img.comida, img.monster, img.salida, .wall, .dark {
         display: inline;
         width: 40px;
         height: 40px;
@@ -19,8 +28,16 @@
         z-index: 1;
       }
 
+      img.player {
+        z-index: 2;
+      }
+
       .wall {
         background-image: url(assets/01bricks1.png);
+      }
+
+      .dark {
+        background-color: black;
       }
 
       .game_end {
@@ -30,10 +47,12 @@
         padding-top: 20px;
         margin: auto;
         top: 50px;
+        left: 200px;
         width: 200px;
         height: 100px;
         position: relative;
         z-index: 1; 
+        display: inline-grid;
       }
 
       .instructions {
@@ -42,10 +61,25 @@
         color: lavender;
         display: inline;
         position: absolute;
+        right: 40px;
+        top: 10px;
       }
 
       #score {
         color: yellow;
         background-color: mediumpurple;
         text-align: center;
+        left: 20px;
+        top: 100px;
+        width: 300px;
+        margin: 20px;
+        display:inline-grid;
+      }
+
+      #score > img {
+        width: 100px;
+      }
+
+      #score > div > img {
+        width: 100px;
       }
