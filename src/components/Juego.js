@@ -22,7 +22,7 @@ const POS_INICIO_JUGADOR = { row: 0, col: 0};
 const FOOD_ENERGY = 10;
 const MONSTER_ENERGY = 50;
 const BOSS_LEVEL = 5;
-const BOSS_ENERGY = 80;
+const BOSS_ENERGY = 200;
 const ARMAS_JUGADOR = {"estrella": 5, "libro": 10};
 const ARMAS_MONSTRUOS = {"martillo": 5, "aguja": 4};
 
